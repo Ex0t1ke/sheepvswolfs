@@ -21,7 +21,7 @@ import {
 import { MobileFrame } from './components/MobileFrame';
 import { GameBoard } from './components/GameBoard';
 import { TopBar, BottomControls } from './components/GameHUD';
-import { StartModal, VictoryModal, DefeatModal, SettingsModal } from './components/Modals';
+import { StartModal, VictoryModal, DefeatModal, SettingsModal, AndroidApkModal } from './components/Modals';
 import { SandboxModal } from './components/SandboxModal';
 
 export default function App() {
@@ -43,6 +43,7 @@ export default function App() {
   // Modals state
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [showSandbox, setShowSandbox] = useState<boolean>(false);
+  const [showApkGuide, setShowApkGuide] = useState<boolean>(false);
 
   const isSimulatingRef = useRef<boolean>(false);
   const simTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -398,6 +399,13 @@ export default function App() {
             currentLevel={currentLevelId}
             onSelectLevel={lvl => loadLevel(lvl)}
             onOpenSandbox={() => setShowSandbox(true)}
+            onOpenApkGuide={() => setShowApkGuide(true)}
+          />
+        )}
+
+        {showApkGuide && (
+          <AndroidApkModal
+            onClose={() => setShowApkGuide(false)}
           />
         )}
 

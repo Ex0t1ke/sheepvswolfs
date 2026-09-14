@@ -1,6 +1,6 @@
 import React from 'react';
 import { LevelData } from '../types';
-import { Star, RotateCcw, Play, Volume2, VolumeX, Grid, HelpCircle, X, Sparkles } from 'lucide-react';
+import { Star, RotateCcw, Play, Volume2, VolumeX, Grid, HelpCircle, X, Sparkles, Smartphone, Download, Github, CheckCircle2 } from 'lucide-react';
 import { SheepSprite, WolfSprite, WoodenFenceSprite } from './GameIcons';
 
 interface StartModalProps {
@@ -212,6 +212,7 @@ interface SettingsModalProps {
   currentLevel: number;
   onSelectLevel: (lvl: number) => void;
   onOpenSandbox: () => void;
+  onOpenApkGuide: () => void;
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -221,12 +222,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   currentLevel,
   onSelectLevel,
   onOpenSandbox,
+  onOpenApkGuide,
 }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in select-none">
-      <div className="w-full max-w-sm bg-neutral-900 border-2 border-neutral-700 rounded-3xl p-5 shadow-2xl flex flex-col gap-4 max-h-[90vh] overflow-y-auto">
+      <div className="w-full max-w-sm bg-neutral-900 border-2 border-neutral-700 rounded-3xl p-5 shadow-2xl flex flex-col gap-3.5 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
-          <span className="font-extrabold text-base text-amber-400">Настройки & Уровни</span>
+          <span className="font-extrabold text-base text-amber-400">Настройки & Меню</span>
           <button
             onClick={onClose}
             className="p-1 rounded-lg hover:bg-neutral-800 text-neutral-400 hover:text-white"
@@ -236,7 +238,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         </div>
 
         {/* Audio Toggle */}
-        <div className="flex items-center justify-between bg-neutral-800/80 px-4 py-3 rounded-xl border border-neutral-700">
+        <div className="flex items-center justify-between bg-neutral-800/80 px-4 py-2.5 rounded-xl border border-neutral-700">
           <div className="flex items-center gap-2 text-sm font-bold text-neutral-200">
             {isMuted ? <VolumeX size={18} className="text-rose-400" /> : <Volume2 size={18} className="text-emerald-400" />}
             Звуки и эффекты
@@ -258,7 +260,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
             Выбор уровня:
           </span>
-          <div className="grid grid-cols-5 gap-2 max-h-36 overflow-y-auto pr-1">
+          <div className="grid grid-cols-5 gap-2 max-h-32 overflow-y-auto pr-1">
             {Array.from({ length: 20 }).map((_, i) => {
               const lvl = i + 1;
               const isCurrent = lvl === currentLevel;
@@ -282,16 +284,28 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
         </div>
 
+        {/* APK Download / GitHub Actions Guide Button */}
+        <button
+          onClick={() => {
+            onClose();
+            onOpenApkGuide();
+          }}
+          className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:brightness-110 font-black text-xs sm:text-sm text-white flex items-center justify-center gap-2 border border-emerald-500 shadow-md transition-all active:scale-95"
+        >
+          <Smartphone size={16} />
+          <span>Сборка APK для Android (GitHub)</span>
+        </button>
+
         {/* Sandbox Generator Mode */}
         <button
           onClick={() => {
             onClose();
             onOpenSandbox();
           }}
-          className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:brightness-110 font-black text-xs sm:text-sm text-white flex items-center justify-center gap-2 border border-amber-500 shadow-md"
+          className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:brightness-110 font-black text-xs sm:text-sm text-white flex items-center justify-center gap-2 border border-amber-500 shadow-md transition-all active:scale-95"
         >
           <Grid size={16} />
-          Генератор уровней (Sandbox)
+          <span>Генератор уровней (Sandbox)</span>
         </button>
 
         {/* Rules Reminder */}
@@ -301,6 +315,95 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           2. Поставь заборы на границы клеток, чтобы отрезать волков от овец.<br />
           3. Запусти волков: они используют A* поиск пути. Если путь закрыт, волки уйдут с поля!
         </div>
+      </div>
+    </div>
+  );
+};
+
+interface AndroidApkModalProps {
+  onClose: () => void;
+}
+
+export const AndroidApkModal: React.FC<AndroidApkModalProps> = ({ onClose }) => {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fade-in select-none">
+      <div className="w-full max-w-md bg-neutral-900 border-2 border-emerald-600/70 rounded-3xl p-5 shadow-2xl flex flex-col gap-4 max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-600 flex items-center justify-center text-emerald-400">
+              <Smartphone size={18} />
+            </div>
+            <div>
+              <h3 className="font-extrabold text-sm sm:text-base text-emerald-300">
+                Сборка APK через GitHub
+              </h3>
+              <p className="text-[11px] text-neutral-400">Capacitor Android + GitHub Actions</p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-lg hover:bg-neutral-800 text-neutral-400 hover:text-white"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="text-xs text-neutral-300 leading-relaxed">
+          В репозитории уже полностью настроены <strong className="text-emerald-400">Capacitor Android</strong> и автоматический воркфлоу <strong className="text-amber-400">GitHub Actions</strong>. Вам не требуется Android Studio на ПК!
+        </div>
+
+        {/* 3 Steps */}
+        <div className="flex flex-col gap-2.5">
+          <div className="p-3 rounded-xl bg-neutral-800/80 border border-neutral-700 flex gap-3 items-start">
+            <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500 flex items-center justify-center text-xs font-black shrink-0">
+              1
+            </div>
+            <div className="flex-1 text-xs">
+              <div className="font-bold text-white mb-0.5">Экспорт в GitHub</div>
+              <p className="text-neutral-400 text-[11px]">
+                В меню AI Studio нажмите <strong>Settings / Export</strong> → <strong>Export to GitHub</strong> или отправьте коммит в свой репозиторий.
+              </p>
+            </div>
+          </div>
+
+          <div className="p-3 rounded-xl bg-neutral-800/80 border border-neutral-700 flex gap-3 items-start">
+            <div className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500 flex items-center justify-center text-xs font-black shrink-0">
+              2
+            </div>
+            <div className="flex-1 text-xs">
+              <div className="font-bold text-white mb-0.5">Автоматическая сборка в Actions</div>
+              <p className="text-neutral-400 text-[11px]">
+                Откройте репозиторий на GitHub → перейдите во вкладку <strong>Actions</strong>. Воркфлоу <em>«Build Android APK»</em> соберёт проект за 2-3 минуты.
+              </p>
+            </div>
+          </div>
+
+          <div className="p-3 rounded-xl bg-neutral-800/80 border border-neutral-700 flex gap-3 items-start">
+            <div className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500 flex items-center justify-center text-xs font-black shrink-0">
+              3
+            </div>
+            <div className="flex-1 text-xs">
+              <div className="font-bold text-white mb-0.5">Скачивание APK на телефон</div>
+              <p className="text-neutral-400 text-[11px]">
+                В завершённой сборке в разделе <strong>Artifacts</strong> скачайте архив <em>SheepVsWolves-Android-APK</em>, распакуйте и установите на Android!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-3 rounded-xl bg-neutral-950/80 border border-neutral-800 text-[11px] text-neutral-400 font-mono">
+          <div className="text-neutral-300 font-sans font-bold mb-1">Файлы проекта:</div>
+          • .github/workflows/build-apk.yml<br />
+          • capacitor.config.ts (ID: com.sheepvswolves.game)<br />
+          • ANDROID_BUILD_GUIDE.md (полное руководство)
+        </div>
+
+        <button
+          onClick={onClose}
+          className="w-full py-2.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 border border-neutral-600 font-bold text-xs text-white transition-colors"
+        >
+          Понятно, закрыть
+        </button>
       </div>
     </div>
   );

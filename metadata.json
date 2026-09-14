@@ -2,5 +2,7 @@
   "name": "Защита Овец от Волков - Sheep vs Wolves",
   "description": "2D мобильная логическая игра-головоломка с процедурной генерацией уровней: расставляй овец и заборы, чтобы защитить стадо от стаи волков с A* поиском пути.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
